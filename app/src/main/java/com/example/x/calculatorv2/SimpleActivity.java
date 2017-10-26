@@ -2,10 +2,14 @@ package com.example.x.calculatorv2;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.udojava.evalex.Expression;
+
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +17,8 @@ public class SimpleActivity extends AppCompatActivity {
 
     private static String input;
     private List<String> toParse = new ArrayList<>();
-    private static int i=0;
+    private static int i = 0;
+
 
     private double num1;
     private double num2;
@@ -40,9 +45,12 @@ public class SimpleActivity extends AppCompatActivity {
     private Button remove;
     private Button equals;
 
+
+    private TextView result;
+
     private static boolean flag = false;
 
-    boolean isDouble(String str) {
+    public boolean isDouble(String str) {
         try {
             Double.parseDouble(str);
             return true;
@@ -51,6 +59,13 @@ public class SimpleActivity extends AppCompatActivity {
         }
     }
 
+    public String concatanete(List<String> list){
+        StringBuilder stringBuilder = new StringBuilder();
+        for (String s : list) {
+            stringBuilder.append(s);
+        }
+        return stringBuilder.toString();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,9 +73,8 @@ public class SimpleActivity extends AppCompatActivity {
         setContentView(R.layout.activity_simple);
 
 
-
         final TextView memory = (TextView) findViewById(R.id.memory);
-        final TextView result = (TextView) findViewById(R.id.result);
+        result = (TextView) findViewById(R.id.result);
 
         Button button0 = (Button) findViewById(R.id.btn0);
         Button button1 = (Button) findViewById(R.id.btn1);
@@ -82,61 +96,25 @@ public class SimpleActivity extends AppCompatActivity {
         Button remove = (Button) findViewById(R.id.remove);
         Button equals = (Button) findViewById(R.id.equals);
 
-        result.setText(calcResult+"");
+        result.setText(calcResult + "");
 
         button0.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 toParse.add("0");
-                if(i==0)
-                {
+                if (i == 0) {
                     input = toParse.get(i);
                     memory.setText(input);
-                    calcResult = calcResult + Double.parseDouble(toParse.get(i));
-                    result.setText(calcResult+"");
-                }
-                else
-                {
-                    if(!toParse.get(i-1).equals("/"))
-                    {
+
+                } else {
+                    if (!toParse.get(i - 1).equals("/")) {
                         input = input + toParse.get(i);
                         memory.setText(input);
-
-                        for(int i=0; i<toParse.size();i++)
-                        {
-                            if(isDouble(toParse.get(i)))
-                            {
-                                if(toParse.get(i-1).equals("+"))
-                                {
-                                    calcResult = calcResult + Double.parseDouble(toParse.get(i));
-                                    result.setText(calcResult+"");
-                                }
-                                else if (toParse.get(i-1).equals("-"))
-                                {
-                                    calcResult = calcResult - Double.parseDouble(toParse.get(i));
-                                    result.setText(calcResult+"");
-                                }
-                                else if (toParse.get(i-1).equals("*"))
-                                {
-                                    calcResult = calcResult * Double.parseDouble(toParse.get(i));
-                                    result.setText(calcResult+"");
-                                }
-//                                else if (toParse.get(i-1).equals("/"))
-//                                {
-//                                    calcResult = calcResult / Double.parseDouble(toParse.get(i));
-//                                    result.setText(calcResult+"");
-//                                }
-                            }
-                        }
-                    }
-                    else
-                    {
+                    } else {
                         memory.setText("Cannot divide by 0 !");
                     }
                 }
                 i++;
-
-
             }
         });
 
@@ -144,42 +122,10 @@ public class SimpleActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 toParse.add("1");
-                if(i==0)
-                {
+                if (i == 0) {
                     input = toParse.get(i);
-                    calcResult = Double.parseDouble(toParse.get(i));
-//                    result.setText(input);
-                    result.setText(calcResult+"");
-                }
-                else
-                {
+                } else {
                     input = input + toParse.get(i);
-                    for(int i=0; i<toParse.size();i++)
-                    {
-                        if(isDouble(toParse.get(i)))
-                        {
-                            if(toParse.get(i-1).equals("+"))
-                            {
-                                calcResult = calcResult + Double.parseDouble(toParse.get(i));
-                                result.setText(calcResult+"");
-                            }
-                            else if (toParse.get(i-1).equals("-"))
-                            {
-                                calcResult = calcResult - Double.parseDouble(toParse.get(i));
-                                result.setText(calcResult+"");
-                            }
-                            else if (toParse.get(i-1).equals("*"))
-                            {
-                                calcResult = calcResult * Double.parseDouble(toParse.get(i));
-                                result.setText(calcResult+"");
-                            }
-                            else if (toParse.get(i-1).equals("/"))
-                            {
-                                calcResult = calcResult / Double.parseDouble(toParse.get(i));
-                                result.setText(calcResult+"");
-                            }
-                        }
-                    }
                 }
                 memory.setText(input);
                 i++;
@@ -190,41 +136,10 @@ public class SimpleActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 toParse.add("2");
-                if(i==0)
-                {
+                if (i == 0) {
                     input = toParse.get(i);
-                    calcResult = calcResult + Double.parseDouble(toParse.get(i));
-                    result.setText(input);
-                }
-                else
-                {
+                } else {
                     input = input + toParse.get(i);
-                    for(int i=0; i<toParse.size();i++)
-                    {
-                        if(isDouble(toParse.get(i)))
-                        {
-                            if(toParse.get(i-1).equals("+"))
-                            {
-                                calcResult = calcResult + Double.parseDouble(toParse.get(i));
-                                result.setText(calcResult+"");
-                            }
-                            else if (toParse.get(i-1).equals("-"))
-                            {
-                                calcResult = calcResult - Double.parseDouble(toParse.get(i));
-                                result.setText(calcResult+"");
-                            }
-                            else if (toParse.get(i-1).equals("*"))
-                            {
-                                calcResult = calcResult * Double.parseDouble(toParse.get(i));
-                                result.setText(calcResult+"");
-                            }
-                            else if (toParse.get(i-1).equals("/"))
-                            {
-                                calcResult = calcResult / Double.parseDouble(toParse.get(i));
-                                result.setText(calcResult+"");
-                            }
-                        }
-                    }
                 }
                 memory.setText(input);
                 i++;
@@ -235,45 +150,12 @@ public class SimpleActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 toParse.add("3");
-                if(i==0)
-                {
+                if (i == 0) {
                     input = toParse.get(i);
-                    calcResult = calcResult + Double.parseDouble(toParse.get(i));
-                    result.setText(input);
                 }
-                else
-                {
+                else {
                     input = input + toParse.get(i);
-
-                    for(int i=0; i<toParse.size();i++)
-                    {
-                        if(isDouble(toParse.get(i)))
-                        {
-                            if(toParse.get(i-1).equals("+"))
-                            {
-                                calcResult = calcResult + Double.parseDouble(toParse.get(i));
-                                result.setText(calcResult+"");
-                            }
-                            else if (toParse.get(i-1).equals("-"))
-                            {
-                                calcResult = calcResult - Double.parseDouble(toParse.get(i));
-                                result.setText(calcResult+"");
-                            }
-                            else if (toParse.get(i-1).equals("*"))
-                            {
-                                calcResult = calcResult * Double.parseDouble(toParse.get(i));
-                                result.setText(calcResult+"");
-                            }
-                            else if (toParse.get(i-1).equals("/"))
-                            {
-                                calcResult = calcResult / Double.parseDouble(toParse.get(i));
-                                result.setText(calcResult+"");
-                            }
-                        }
-                    }
                 }
-
-
                 memory.setText(input);
                 i++;
             }
@@ -283,15 +165,10 @@ public class SimpleActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 toParse.add("4");
-                if(i==0)
-                {
+                if (i == 0) {
                     input = toParse.get(i);
-                }
-                else
-                {
+                } else {
                     input = input + toParse.get(i);
-
-
                 }
 
 
@@ -304,12 +181,9 @@ public class SimpleActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 toParse.add("5");
-                if(i==0)
-                {
+                if (i == 0) {
                     input = toParse.get(i);
-                }
-                else
-                {
+                } else {
                     input = input + toParse.get(i);
                 }
 
@@ -323,12 +197,9 @@ public class SimpleActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 toParse.add("6");
-                if(i==0)
-                {
+                if (i == 0) {
                     input = toParse.get(i);
-                }
-                else
-                {
+                } else {
                     input = input + toParse.get(i);
                 }
 
@@ -342,12 +213,9 @@ public class SimpleActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 toParse.add("7");
-                if(i==0)
-                {
+                if (i == 0) {
                     input = toParse.get(i);
-                }
-                else
-                {
+                } else {
                     input = input + toParse.get(i);
                 }
 
@@ -361,12 +229,9 @@ public class SimpleActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 toParse.add("8");
-                if(i==0)
-                {
+                if (i == 0) {
                     input = toParse.get(i);
-                }
-                else
-                {
+                } else {
                     input = input + toParse.get(i);
                 }
 
@@ -380,12 +245,9 @@ public class SimpleActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 toParse.add("9");
-                if(i==0)
-                {
+                if (i == 0) {
                     input = toParse.get(i);
-                }
-                else
-                {
+                } else {
                     input = input + toParse.get(i);
                 }
 
@@ -398,24 +260,18 @@ public class SimpleActivity extends AppCompatActivity {
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(i==0)
-                {
+                if (i == 0) {
                     toParse.add("+");
                     input = toParse.get(i);
                     i++;
-                }
-                else
-                {
-                    if(toParse.get(i-1).equals("+") ||toParse.get(i-1).equals("-") || toParse.get(i-1).equals("*") || toParse.get(i-1).equals("/"))
-                    {
-                        toParse.remove(i-1);
+                } else {
+                    if (toParse.get(i - 1).equals("+") || toParse.get(i - 1).equals("-") || toParse.get(i - 1).equals("*") || toParse.get(i - 1).equals("/")) {
+                        toParse.remove(i - 1);
                         i--;
                         toParse.add("+");
-                        input = input.substring(0,i) + toParse.get(i);
+                        input = input.substring(0, i) + toParse.get(i);
                         i++;
-                    }
-                    else
-                    {
+                    } else {
                         toParse.add("+");
                         input = input + toParse.get(i);
                         i++;
@@ -431,24 +287,18 @@ public class SimpleActivity extends AppCompatActivity {
         substr.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(i==0)
-                {
+                if (i == 0) {
                     toParse.add("-");
                     input = toParse.get(i);
                     i++;
-                }
-                else
-                {
-                    if(toParse.get(i-1).equals("+") ||toParse.get(i-1).equals("-") || toParse.get(i-1).equals("*") || toParse.get(i-1).equals("/"))
-                    {
-                        toParse.remove(i-1);
+                } else {
+                    if (toParse.get(i - 1).equals("+") || toParse.get(i - 1).equals("-") || toParse.get(i - 1).equals("*") || toParse.get(i - 1).equals("/")) {
+                        toParse.remove(i - 1);
                         i--;
                         toParse.add("-");
-                        input = input.substring(0,i) + toParse.get(i);
+                        input = input.substring(0, i) + toParse.get(i);
                         i++;
-                    }
-                    else
-                    {
+                    } else {
                         toParse.add("-");
                         input = input + toParse.get(i);
                         i++;
@@ -463,24 +313,18 @@ public class SimpleActivity extends AppCompatActivity {
         divide.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(i==0)
-                {
+                if (i == 0) {
                     toParse.add("/");
                     input = toParse.get(i);
                     i++;
-                }
-                else
-                {
-                    if(toParse.get(i-1).equals("+") ||toParse.get(i-1).equals("-") || toParse.get(i-1).equals("*") || toParse.get(i-1).equals("/"))
-                    {
-                        toParse.remove(i-1);
+                } else {
+                    if (toParse.get(i - 1).equals("+") || toParse.get(i - 1).equals("-") || toParse.get(i - 1).equals("*") || toParse.get(i - 1).equals("/")) {
+                        toParse.remove(i - 1);
                         i--;
                         toParse.add("/");
-                        input = input.substring(0,i) + toParse.get(i);
+                        input = input.substring(0, i) + toParse.get(i);
                         i++;
-                    }
-                    else
-                    {
+                    } else {
                         toParse.add("/");
                         input = input + toParse.get(i);
                         i++;
@@ -495,24 +339,18 @@ public class SimpleActivity extends AppCompatActivity {
         multiply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(i==0)
-                {
+                if (i == 0) {
                     toParse.add("+");
                     input = toParse.get(i);
                     i++;
-                }
-                else
-                {
-                    if(toParse.get(i-1).equals("+") ||toParse.get(i-1).equals("-") || toParse.get(i-1).equals("*") || toParse.get(i-1).equals("/"))
-                    {
-                        toParse.remove(i-1);
+                } else {
+                    if (toParse.get(i - 1).equals("+") || toParse.get(i - 1).equals("-") || toParse.get(i - 1).equals("*") || toParse.get(i - 1).equals("/")) {
+                        toParse.remove(i - 1);
                         i--;
                         toParse.add("*");
-                        input = input.substring(0,i) + toParse.get(i);
+                        input = input.substring(0, i) + toParse.get(i);
                         i++;
-                    }
-                    else
-                    {
+                    } else {
                         toParse.add("*");
                         input = input + toParse.get(i);
                         i++;
@@ -527,24 +365,19 @@ public class SimpleActivity extends AppCompatActivity {
         dot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-            if(i!=0)
-            {
-                if(flag==false && !(toParse.get(i-1).equals("+")||toParse.get(i-1).equals("-")||toParse.get(i-1).equals("/")||toParse.get(i-1).equals("*")))
-                {
-                    toParse.add(".");
-                    if(i==0)
-                    {
-                        input = toParse.get(i);
+                if (i != 0) {
+                    if (flag == false && !(toParse.get(i - 1).equals("+") || toParse.get(i - 1).equals("-") || toParse.get(i - 1).equals("/") || toParse.get(i - 1).equals("*"))) {
+                        toParse.add(".");
+                        if (i == 0) {
+                            input = toParse.get(i);
+                        } else {
+                            input = input + toParse.get(i);
+                        }
+                        memory.setText(input);
+                        flag = true;
+                        i++;
                     }
-                    else
-                    {
-                        input = input + toParse.get(i);
-                    }
-                    memory.setText(input);
-                    flag=true;
-                    i++;
                 }
-            }
 
             }
         });
@@ -552,21 +385,16 @@ public class SimpleActivity extends AppCompatActivity {
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(i!=0)
-                {
-                    if(toParse.get(i-1).equals("."))
-                    {
+                if (i != 0) {
+                    if (toParse.get(i - 1).equals(".")) {
                         flag = false;
                     }
-                    toParse.remove(i-1);
+                    toParse.remove(i - 1);
 
-                    if(i==0)
-                    {
+                    if (i == 0) {
                         input = "";
-                    }
-                    else
-                    {
-                        input = input.substring(0,i-1);
+                    } else {
+                        input = input.substring(0, i - 1);
                         i--;
                     }
                     memory.setText(input);
@@ -577,9 +405,10 @@ public class SimpleActivity extends AppCompatActivity {
         remove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               toParse.removeAll(toParse);
-                i=0;
+                toParse.removeAll(toParse);
+                i = 0;
                 memory.setText("");
+                result.setText("");
                 flag = false;
             }
         });
@@ -587,8 +416,17 @@ public class SimpleActivity extends AppCompatActivity {
         equals.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                BigDecimal res;
+                String concatanete = concatanete(toParse);
+                Log.i("calculator", concatanete);
+                Expression expression = new Expression(concatanete);
+                res = expression.eval();
 
+                result.setText(res.toPlainString());
             }
         });
+
+
+
     }
 }
